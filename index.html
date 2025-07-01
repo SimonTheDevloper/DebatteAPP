@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debattentraining: Zoos verbieten</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Add padding for smaller screens */
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            width: 100%; /* Ensure it takes full width on smaller screens */
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255,255,255,0.95); /* Semi-transparent white background for content */
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        /* Header Styling */
+        .header {
+            text-align: center;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+            gap: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Subtle shadow for tabs */
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 120px; /* Minimum width for each tab */
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #666;
+            text-align: center; /* Center text in tabs */
+        }
+
+        .tab.active {
+            background: #3498db;
+            color: white;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .tab:hover:not(.active) {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        /* Content Sections */
+        .content {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: none; /* Hidden by default, shown by JS */
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            color: #34495e;
+            margin: 25px 0 15px 0;
+        }
+
+        /* Argument Cards */
+        .argument-card {
+            background: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Subtle shadow for cards */
+        }
+
+        .argument-card.pro {
+            border-left-color: #27ae60; /* Green for PRO */
+            background: #f8fff8;
+        }
+
+        .argument-card.contra {
+            border-left-color: #e74c3c; /* Red for CONTRA */
+            background: #fff8f8;
+        }
+
+        .argument-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        /* Speech Templates */
+        .speech-template {
+            background: #e8f4fd;
+            border: 2px dashed #3498db;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .speech-template h4 {
+            color: #2980b9;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .speech-part {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.03);
+        }
+
+        .speech-part strong {
+            color: #2c3e50;
+        }
+
+        /* Phrases Grid */
+        .phrases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .phrase-category {
+            background: #f1f2f6;
+            padding: 20px;
+            border-radius: 15px;
+            border-top: 4px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .phrase-category h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .phrase {
+            background: white;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+            font-style: italic;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .quiz-option {
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: #3498db;
+            background: #e8f4fd;
+        }
+
+        .quiz-option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+        }
+
+        .quiz-option.wrong {
+            border-color: #e74c3c;
+            background: #ffeaea;
+        }
+
+        .quiz-feedback {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .quiz-feedback.correct {
+            color: #27ae60;
+        }
+        .quiz-feedback.wrong {
+            color: #e74c3c;
+        }
+
+
+        /* Buttons */
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+            box-shadow: 0 6px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Timer Practice */
+        .timer-practice {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(255,193,7,0.1);
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-family: monospace;
+            color: #856404;
+            margin: 20px 0;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.03);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        .checklist-item label {
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .score-display {
+            background: #d4edda;
+            border: 2px solid #27ae60;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #155724;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+            }
+            
+            .phrases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 20px; /* Adjust padding for smaller screens */
+            }
+
+            .section h2 {
+                font-size: 1.7rem;
+            }
+
+            .section h3 {
+                font-size: 1.3rem;
+            }
+
+            .argument-card, .speech-template, .phrase-category, .quiz-container, .timer-practice, .checklist {
+                padding: 15px;
+            }
+
+            .quiz-question {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                width: 100%; /* Full width buttons on mobile */
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Debattentraining</h1>
+            <p>Sollten Zoos verboten werden?</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('arguments')">Argumente</button>
+            <button class="tab" onclick="showTab('speeches')">Redestrukturen</button>
+            <button class="tab" onclick="showTab('phrases')">Formulierungen</button>
+            <button class="tab" onclick="showTab('counter')">Entkräftung</button>
+            <button class="tab" onclick="showTab('practice')">Übung</button>
+        </div>
+
+        <!-- ARGUMENTE -->
+        <div id="arguments" class="content active">
+            <div class="section">
+                <h2>PRO-Argumente (Zoos verbieten)</h2>
+                
+                <div class="argument-card pro">
+                    <div class="argument-title">1. Tierwohl und Artgerechte Haltung</div>
+                    <p><strong>Hauptargument:</strong> Zoos können niemals die natürlichen Lebensräume der Tiere vollständig nachahmen.</p>
+                    <p><strong>Belege:</strong> Elefanten laufen in der Natur täglich 50km, in Zoos oft nur wenige hundert Meter. Viele Tiere entwickeln Verhaltensstörungen (Stereotypien).</p>
+                    <p><strong>Beispiel:</strong> Eisbären, die stundenlang im Kreis laufen, zeigen deutliche Anzeichen psychischer Belastung.</p>
+                </div>
+
+                <div class="argument-card pro">
+                    <div class="argument-title">2. Fragwürdiger Bildungsauftrag</div>
+                    <p><strong>Hauptargument:</strong> Zoos vermitteln ein falsches Bild von Tieren und der Natur.</p>
+                    <p><strong>Belege:</strong> Besucher sehen passive, oft verhaltensgestörte Tiere statt natürlicher Verhaltensweisen.</p>
+                    <p><strong>Alternative:</strong> Dokumentationen, VR-Erlebnisse und Naturschutzgebiete bieten bessere Bildungsmöglichkeiten.</p>
+                </div>
+
+                <div class="argument-card pro">
+                    <div class="argument-title">3. Ethische Bedenken</div>
+                    <p><strong>Hauptargument:</strong> Es ist moralisch fragwürdig, Tiere zur menschlichen Unterhaltung einzusperren.</p>
+                    <p><strong>Belege:</strong> Tiere haben ein Recht auf Freiheit und Selbstbestimmung.</p>
+                    <p><strong>Vergleich:</strong> Wir würden es auch nicht akzeptieren, Menschen zur Schau zu stellen.</p>
+                </div>
+
+                <div class="argument-card pro">
+                    <div class="argument-title">4. Ineffektiver Artenschutz</div>
+                    <p><strong>Hauptargument:</strong> Zoos konzentrieren sich auf beliebte "Publikumsmagneten" statt bedrohte Arten.</p>
+                    <p><strong>Belege:</strong> Nur 3% der in Zoos gehaltenen Arten sind wirklich bedroht. Auswilderungen sind selten erfolgreich.</p>
+                    <p><strong>Alternative:</strong> Geld sollte in Habitatschutz und Anti-Wilderei-Maßnahmen fließen.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>CONTRA-Argumente (Zoos erhalten)</h2>
+                
+                <div class="argument-card contra">
+                    <div class="argument-title">1. Wichtiger Artenschutz</div>
+                    <p><strong>Hauptargument:</strong> Zoos retten Arten vor dem Aussterben durch Zuchtprogramme.</p>
+                    <p><strong>Belege:</strong> Über 30 Arten wurden durch Zoozucht vor dem Aussterben bewahrt (z.B. Kalifornischer Kondor, Arabisches Oryx).</p>
+                    <p><strong>Erfolge:</strong> Über 5000 erfolgreiche Auswilderungen in den letzten Jahrzehnten.</p>
+                </div>
+
+                <div class="argument-card contra">
+                    <div class="argument-title">2. Bildung und Bewusstseinsbildung</div>
+                    <p><strong>Hauptargument:</strong> Zoos schaffen emotionale Verbindungen zu Tieren und motivieren zum Naturschutz.</p>
+                    <p><strong>Belege:</strong> 700 Millionen Zoobesucher weltweit pro Jahr lernen über Naturschutz.</p>
+                    <p><strong>Effekt:</strong> Persönliche Begegnungen wirken stärker als Medien - "Man schützt nur, was man kennt".</p>
+                </div>
+
+                <div class="argument-card contra">
+                    <div class="argument-title">3. Forschung für den Naturschutz</div>
+                    <p><strong>Hauptargument:</strong> Zoos ermöglichen wichtige Forschung, die in der Wildnis unmöglich wäre.</p>
+                    <p><strong>Belege:</strong> Erkenntnisse über Verhalten, Fortpflanzung und Krankheiten helfen wilden Populationen.</p>
+                    <p><strong>Beispiel:</strong> Panda-Forschung in Zoos half beim Schutz wilder Pandas in China.</p>
+                </div>
+
+                <div class="argument-card contra">
+                    <div class="argument-title">4. Moderne Standards und Verbesserungen</div>
+                    <p><strong>Hauptargument:</strong> Moderne Zoos haben sich stark verbessert und erfüllen hohe Tierschutzstandards.</p>
+                    <p><strong>Belege:</strong> Große, naturnahe Gehege, Beschäftigungsprogramme, tierärztliche Betreuung.</p>
+                    <p><strong>Entwicklung:</strong> Von Käfigen zu naturnahen Lebensräumen - der Wandel ist bereits da.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- REDESTRUKTUREN -->
+        <div id="speeches" class="content">
+            <div class="section">
+                <h2>Eröffnungsrede (1-2 Minuten)</h2>
+                
+                <div class="speech-template">
+                    <h4>Struktur der Eröffnungsrede:</h4>
+                    
+                    <div class="speech-part">
+                        <strong>1. Einstieg (15-20 Sekunden):</strong><br>
+                        Aufmerksamkeit wecken mit einer Frage, einem Zitat oder einer provokanten Aussage.
+                        <br><em>Beispiel PRO:</em> "Stellen Sie sich vor, Sie würden Ihr ganzes Leben in einem Käfig verbringen - zur Unterhaltung anderer."
+                        <br><em>Beispiel CONTRA:</em> "Ohne Zoos wären heute bereits 30 Tierarten für immer von unserem Planeten verschwunden."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>2. Position klar benennen (10 Sekunden):</strong><br>
+                        "Ich bin fest davon überzeugt, dass Zoos verboten werden sollten/erhalten bleiben müssen."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>3. Hauptargumente auflisten (20-30 Sekunden):</strong><br>
+                        "Dafür sprechen drei entscheidende Punkte: Erstens..., zweitens..., drittens..."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>4. Erstes Argument ausführen (40-60 Sekunden):</strong><br>
+                        Ihr stärkstes Argument mit konkreten Beispielen und Belegen.
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>5. Überleitung (5-10 Sekunden):</strong><br>
+                        "Ich freue mich auf eine konstruktive Diskussion zu diesem wichtigen Thema."
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Freie Aussprache (flexibel)</h2>
+                
+                <div class="speech-template">
+                    <h4>Strategien für die freie Aussprache:</h4>
+                    
+                    <div class="speech-part">
+                        <strong>Aufgreifen und Widerlegen:</strong><br>
+                        "Mein Vorredner hat behauptet... Dem muss ich widersprechen, denn..."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>Neue Aspekte einbringen:</strong><br>
+                        "Ein wichtiger Punkt, der noch nicht erwähnt wurde, ist..."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>Beispiele nachliefern:</strong><br>
+                        "Das lässt sich gut am Beispiel von... verdeutlichen..."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>Fragen stellen:</strong><br>
+                        "Wie erklären sich die Gegner eigentlich, dass...?"
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Schlussrede (1-2 Minuten)</h2>
+                
+                <div class="speech-template">
+                    <h4>Struktur der Schlussrede:</h4>
+                    
+                    <div class="speech-part">
+                        <strong>1. Zusammenfassung (30-40 Sekunden):</strong><br>
+                        "Die heutige Debatte hat gezeigt... Die wichtigsten Argumente für unsere Position sind..."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>2. Entkräftung der Gegenseite (30-40 Sekunden):</strong><br>
+                        "Die Gegenseite konnte nicht überzeugend erklären, warum... Ihre Argumente greifen zu kurz, weil..."
+                    </div>
+                    
+                    <div class="speech-part">
+                        <strong>3. Emotionaler Appell (20-30 Sekunden):</strong><br>
+                        Ein starkes Schlusswort, das im Gedächtnis bleibt.
+                        <br><em>PRO:</em> "Es ist an der Zeit, dass wir Tiere als das respektieren, was sie sind: Lebewesen mit eigenen Rechten, nicht unsere Unterhaltung."
+                        <br><em>CONTRA:</em> "Zoos sind Archen der Zukunft - ohne sie verlieren wir nicht nur Tiere, sondern auch die Chance, zukünftige Generationen für den Naturschutz zu begeistern."
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULIERUNGEN -->
+        <div id="phrases" class="content">
+            <div class="section">
+                <h2>Nützliche Formulierungen</h2>
+                
+                <div class="phrases-grid">
+                    <div class="phrase-category">
+                        <h4>Position beziehen</h4>
+                        <div class="phrase">"Ich bin fest davon überzeugt, dass..."</div>
+                        <div class="phrase">"Meiner Ansicht nach ist es unbestreitbar, dass..."</div>
+                        <div class="phrase">"Die Fakten sprechen eine klare Sprache..."</div>
+                        <div class="phrase">"Es lässt sich nicht von der Hand weisen, dass..."</div>
+                    </div>
+                    
+                    <div class="phrase-category">
+                        <h4>Argumente einleiten</h4>
+                        <div class="phrase">"Ein entscheidender Punkt ist..."</div>
+                        <div class="phrase">"Hinzu kommt, dass..."</div>
+                        <div class="phrase">"Nicht zu vergessen ist..."</div>
+                        <div class="phrase">"Ein weiterer wichtiger Aspekt..."</div>
+                        <div class="phrase">"Besonders schwer wiegt das Argument..."</div>
+                    </div>
+                    
+                    <div class="phrase-category">
+                        <h4>Beispiele anführen</h4>
+                        <div class="phrase">"Das lässt sich gut am Beispiel... verdeutlichen"</div>
+                        <div class="phrase">"Ein konkreter Fall zeigt..."</div>
+                        <div class="phrase">"Die Praxis beweist..."</div>
+                        <div class="phrase">"Studien belegen eindeutig..."</div>
+                    </div>
+                    
+                    <div class="phrase-category">
+                        <h4>Auf Gegner eingehen</h4>
+                        <div class="phrase">"Mein Vorredner hat behauptet... Dem muss ich widersprechen"</div>
+                        <div class="phrase">"Diese Sichtweise greift zu kurz, weil..."</div>
+                        <div class="phrase">"Das Argument überzeugt nicht, denn..."</div>
+                        <div class="phrase">"Hier wird ein wichtiger Punkt übersehen..."</div>
+                    </div>
+                    
+                    <div class="phrase-category">
+                        <h4>Verstärken</h4>
+                        <div class="phrase">"Dies unterstreicht umso mehr..."</div>
+                        <div class="phrase">"Gerade deshalb ist es wichtig..."</div>
+                        <div class="phrase">"Das macht deutlich, wie dringend..."</div>
+                        <div class="phrase">"Umso mehr müssen wir..."</div>
+                    </div>
+                    
+                    <div class="phrase-category">
+                        <h4>Schlussfolgerungen</h4>
+                        <div class="phrase">"Daraus folgt unweigerlich..."</div>
+                        <div class="phrase">"Die logische Konsequenz ist..."</div>
+                        <div class="phrase">"Zusammenfassend lässt sich sagen..."</div>
+                        <div class="phrase">"Das führt zu dem Schluss..."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENTKRÄFTUNG -->
+        <div id="counter" class="content">
+            <div class="section">
+                <h2>Entkräftungsstrategien</h2>
+                
+                <h3>Wenn du PRO bist (Zoos verbieten):</h3>
+                
+                <div class="argument-card">
+                    <div class="argument-title">Contra-Argument: "Zoos retten Arten"</div>
+                    <p><strong>Entkräftung:</strong> "Nur 3% der Zoo-Tiere sind wirklich bedroht. Das Geld wäre in Habitatschutz besser investiert."</p>
+                    <p><strong>Nachfrage:</strong> "Wie viele der 'geretteten' Arten wurden erfolgreich ausgewildert und haben stabile Populationen aufgebaut?"</p>
+                </div>
+                
+                <div class="argument-card">
+                    <div class="argument-title">Contra-Argument: "Bildungsauftrag"</div>
+                    <p><strong>Entkräftung:</strong> "Traumatisierte Tiere in Käfigen lehren uns nichts über echtes Tierverhalten."</p>
+                    <p><strong>Alternative zeigen:</strong> "Moderne Dokumentationen und VR können viel authentischere Erfahrungen bieten."</p>
+                </div>
+                
+                <div class="argument-card">
+                    <div class="argument-title">Contra-Argument: "Moderne Standards"</div>
+                    <p><strong>Entkräftung:</strong> "Auch der schönste Käfig bleibt ein Käfig. Kein Zoo kann 50km Wanderung für Elefanten bieten."</p>
+                    <p><strong>Kernfrage:</strong> "Rechtfertigen unsere Standards wirklich lebenslange Gefangenschaft?"</p>
+                </div>
+
+                <h3>Wenn du CONTRA bist (Zoos erhalten):</h3>
+                
+                <div class="argument-card">
+                    <div class="argument-title">Pro-Argument: "Tierleid in Zoos"</div>
+                    <p><strong>Entkräftung:</strong> "Moderne Zoos erfüllen höchste Tierschutzstandards - oft bessere Lebensbedingungen als in der bedrohten Wildnis."</p>
+                    <p><strong>Gegenfrage:</strong> "Ist ein Leben in Sicherheit nicht besser als Aussterben durch Wilderei und Habitatverlust?"</p>
+                </div>
+                
+                <div class="argument-card">
+                    <div class="argument-title">Pro-Argument: "Falsche Bildung"</div>
+                    <p><strong>Entkräftung:</strong> "700 Millionen Besucher jährlich entwickeln emotionale Bindungen zu Tieren - das motiviert zu Naturschutz."</p>
+                    <p><strong>Beleg:</strong> "Zoobesucher spenden nachweislich mehr für Naturschutzprojekte."</p>
+                </div>
+                
+                <div class="argument-card">
+                    <div class="argument-title">Pro-Argument: "Ethisch verwerflich"</div>
+                    <p><strong>Entkräftung:</strong> "Was ist ethischer: kontrollierte Haltung oder das Aussterben ganzer Arten zuzulassen?"</p>
+                    <p><strong>Perspektive:</strong> "Zoos sind heute Rettungsinseln, nicht Gefängnisse."</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Rhetorische Techniken</h2>
+                
+                <div class="phrases-grid">
+                    <div class="phrase-category">
+                        <h4>Schwächen aufdecken</h4>
+                        <div class="phrase">"Ihr Argument hat einen entscheidenden Schwachpunkt..."</div>
+                        <div class="phrase">"Da übersehen Sie aber..."</div>
+                        <div class="phrase">"Diese Statistik ist irreführend, weil..."</div>
+                    </div>
+                    
+                    <div class="phrase-category">
+                        <h4>Nachfragen stellen</h4>
+                        <div class="phrase">"Wie erklären Sie sich dann...?"</div>
+                        <div class="phrase">"Haben Sie Belege für diese Behauptung?"</div>
+                        <div class="phrase">"Was ist mit den Fällen, wo...?"</div>
+                    </div>
+                    
+                    <div class="phrase-category">
+                        <h4>Umdrehen der Logik</h4>
+                        <div class="phrase">"Gerade das beweist doch unseren Punkt..."</div>
+                        <div class="phrase">"Das Gegenteil ist der Fall..."</div>
+                        <div class="phrase">"Ihr Beispiel stützt unsere Position..."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÜBUNG -->
+        <div id="practice" class="content">
+            <div class="section">
+                <h2>Redezeit-Training</h2>
+                
+                <div class="timer-practice">
+                    <h3>Übungsthema: Stelle dir vor, du musst spontan argumentieren!</h3>
+                    <div class="timer-display" id="timer-display">2:00</div>
+                    <button class="btn" onclick="startTimer(120)">Eröffnungsrede (2 Min)</button>
+                    <button class="btn" onclick="startTimer(60)">Freie Aussprache (1 Min)</button>
+                    <button class="btn" onclick="startTimer(120)">Schlussrede (2 Min)</button>
+                    <button class="btn btn-success" onclick="stopTimer()">Stop</button>
+                </div>
+                
+                <div class="quiz-container">
+                    <h3>Spontane Argumentationsübung</h3>
+                    <p class="quiz-question" id="quiz-question"></p>
+                    <div class="quiz-options" id="quiz-options">
+                        <!-- Quiz options will be dynamically loaded here -->
+                    </div>
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                    <button class="btn" onclick="loadNewQuizQuestion()">Nächste Frage</button>
+                </div>
+
+                <div class="checklist">
+                    <h2>Selbst-Checkliste für deine Debatte</h2>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1">
+                        <label for="check1">Habe ich meine Position klar benannt?</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2">
+                        <label for="check2">Habe ich mindestens zwei Hauptargumente mit Belegen und Beispielen vorgetragen?</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3">
+                        <label for="check3">Habe ich auf ein Argument der Gegenseite reagiert und es entkräftet?</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4">
+                        <label for="check4">Habe ich passende Formulierungen verwendet?</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5">
+                        <label for="check5">War meine Redezeit angemessen?</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check6">
+                        <label for="check6">War meine Körpersprache und Stimme überzeugend?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to switch between tabs
+        function showTab(tabId) {
+            // Get all content elements and hide them
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Get all tab buttons and deactivate them
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show the selected content and activate the corresponding tab
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Timer variables
+        let timerInterval;
+        let timeLeft;
+        let currentTimerDisplay;
+
+        // Function to start the timer
+        function startTimer(duration) {
+            // Clear any existing timer
+            clearInterval(timerInterval);
+            timeLeft = duration;
+            currentTimerDisplay = document.getElementById('timer-display');
+            updateTimerDisplay(); // Initial display
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    currentTimerDisplay.textContent = "Zeit abgelaufen!";
+                    // Optional: Add an alert or visual cue when time is up
+                }
+            }, 1000);
+        }
+
+        // Function to update the timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            currentTimerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        // Function to stop the timer
+        function stopTimer() {
+            clearInterval(timerInterval);
+            currentTimerDisplay.textContent = "Gestoppt";
+        }
+
+        // Quiz data
+        const quizQuestions = [
+            {
+                question: "Welches PRO-Argument (Zoos verbieten) konzentriert sich auf das natürliche Verhalten der Tiere?",
+                options: [
+                    "Wichtiger Artenschutz",
+                    "Tierwohl und Artgerechte Haltung",
+                    "Bildung und Bewusstseinsbildung",
+                    "Moderne Standards und Verbesserungen"
+                ],
+                correctAnswer: "Tierwohl und Artgerechte Haltung"
+            },
+            {
+                question: "Welches CONTRA-Argument (Zoos erhalten) betont die Rolle der Zoos bei der Rettung seltener Spezies?",
+                options: [
+                    "Ethische Bedenken",
+                    "Fragwürdiger Bildungsauftrag",
+                    "Wichtiger Artenschutz",
+                    "Ineffektiver Artenschutz"
+                ],
+                correctAnswer: "Wichtiger Artenschutz"
+            },
+            {
+                question: "Welche Formulierung eignet sich am besten, um ein Argument der Gegenseite zu entkräften?",
+                options: [
+                    "Ein entscheidender Punkt ist...",
+                    "Das lässt sich gut am Beispiel... verdeutlichen",
+                    "Mein Vorredner hat behauptet... Dem muss ich widersprechen",
+                    "Daraus folgt unweigerlich..."
+                ],
+                correctAnswer: "Mein Vorredner hat behauptet... Dem muss ich widersprechen"
+            },
+            {
+                question: "Was ist ein Merkmal einer guten 'Schlussrede' im Debattentraining?",
+                options: [
+                    "Auflistung aller Argumente der Gegenseite",
+                    "Einleitung mit einer provokanten Aussage",
+                    "Ein starker emotionaler Appell",
+                    "Detaillierte neue Belege"
+                ],
+                correctAnswer: "Ein starker emotionaler Appell"
+            }
+        ];
+
+        let currentQuizQuestionIndex = 0;
+
+        // Function to load a new quiz question
+        function loadNewQuizQuestion() {
+            const questionElement = document.getElementById('quiz-question');
+            const optionsElement = document.getElementById('quiz-options');
+            const feedbackElement = document.getElementById('quiz-feedback');
+
+            // Clear previous feedback and options
+            feedbackElement.textContent = '';
+            feedbackElement.classList.remove('correct', 'wrong');
+            optionsElement.innerHTML = '';
+
+            // Get the current question
+            const currentQuestion = quizQuestions[currentQuizQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+
+            // Create options
+            currentQuestion.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('quiz-option');
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => checkQuizAnswer(option, currentQuestion.correctAnswer);
+                optionsElement.appendChild(optionDiv);
+            });
+
+            // Increment index for next question, loop back if at end
+            currentQuizQuestionIndex = (currentQuizQuestionIndex + 1) % quizQuestions.length;
+        }
+
+        // Function to check the quiz answer
+        function checkQuizAnswer(selectedOption, correctAnswer) {
+            const feedbackElement = document.getElementById('quiz-feedback');
+            const options = document.querySelectorAll('.quiz-option');
+
+            // Disable all options after selection
+            options.forEach(option => {
+                option.onclick = null; // Remove click listener
+                if (option.textContent === correctAnswer) {
+                    option.classList.add('correct');
+                } else if (option.textContent === selectedOption) {
+                    option.classList.add('wrong');
+                }
+            });
+
+            if (selectedOption === correctAnswer) {
+                feedbackElement.textContent = "Richtig! Gut gemacht.";
+                feedbackElement.classList.add('correct');
+            } else {
+                feedbackElement.textContent = `Falsch. Die richtige Antwort war: "${correctAnswer}".`;
+                feedbackElement.classList.add('wrong');
+            }
+        }
+
+        // Initialize the first quiz question when the page loads
+        document.addEventListener('DOMContentLoaded', loadNewQuizQuestion);
+    </script>
+</body>
+</html>
